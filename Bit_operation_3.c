@@ -5,6 +5,7 @@ int main(void) {
     int count = 0;
     
     printf("Введите целое положительное число: ");
+    fflush(stdout);  // Принудительный вывод буфера
     if (scanf("%u", &num) != 1) {
         printf("Ошибка ввода!\n");
         return 1;
