@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <locale.h>
 
 int main(void) {
+    setlocale(LC_ALL, ".UTF8");
+    
     unsigned int num;
     unsigned char new_byte;
     
