@@ -4,11 +4,13 @@ int main(void) {
     printf("Hello, world!\n");
     unsigned int n;
     printf("Введите целое положительное число: ");
-    if (scanf("%u", &n) != 1) {
-        printf("Ошибка ввода!\n");
+    fflush(stdout);
+    
+    char after_num;
+    if (scanf("%u%c", &n, &after_num) != 2 || after_num != '\n') {
+        printf("Ошибка: введите целое положительное число без десятичных точек!\n");
         return 1;
     }
-
     int bits = sizeof(n) * 8;
     int started = 0;
     printf("Двоичное представление: ");
