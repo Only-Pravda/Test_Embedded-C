@@ -1,46 +1,40 @@
-#include <stdio.h> 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main(void) {
-    int n;
-    printf("Введите целое отрицательное число: ");
-    if (scanf("%d", &n) != 1 || n >= 0) {
-        printf("Ошибка ввода! Введите отрицательное число.\n");
-        return 1;
-    }
+	int n;
+	printf("Введите целое отрицательное число: ");
+	fflush(stdout);
 
-    int bits = sizeof(n) * 8;
+	char buf[64];
+	if (!fgets(buf, sizeof(buf), stdin)) {
+		printf("Ошибка ввода!\n");
+		return 1;
+	}
+	size_t len = strlen(buf);
+	if (len > 0 && buf[len - 1] == '\n') buf[len - 1] = '\0';
 
-    // Безопасно работаем с битами через беззнаковый тип
-    unsigned int un = (unsigned int)n;
-    printf("Двоичное представление (двойное дополнение): ");
-    for (int i = bits - 1; i >= 0; i--) {
-        putchar(((un >> i) & 1u) ? '1' : '0');
-    }
-    putchar('\n');
+	char *endptr = NULL;
+	long tmp = strtol(buf, &endptr, 10);
+	if (endptr == buf || *endptr != '\0') {
+		printf("Ошибка: вводите только целое отрицательное число!\n");
+		return 1;
+	}
+	if (tmp >= 0) {
+		printf("Ошибка: число должно быть отрицательным!\n");
+		return 1;
+	}
+	n = (int)tmp;
 
-    // Дополнительно выведем модуль числа (без знака) — чтобы было видно, какие биты 'величины' числа
-    unsigned int mag = (unsigned int)(-(long long)n);
-    // Выводим модуль без ведущих нулей
-    printf("Модуль числа в двоичном (без ведущих нулей): ");
-    int started = 0;
-    for (int i = bits - 1; i >= 0; i--) {
-        if ((mag >> i) & 1u) {
-            started = 1;
-            putchar('1');
-        } else if (started) {
-            putchar('0');
-        }
-    }
-    if (!started) putchar('0');
-    putchar('\n');
-    return 0;
+	int bits = sizeof(n) * 8;
+	unsigned int un = (unsigned int)n;
+	printf("Двоичное представление: ");
+	for (int i = bits - 1; i >= 0; i--) {
+		putchar(((un >> i) & 1u) ? '1' : '0');
+	}
+	putchar('\n');
+	return 0;
 }
-
-
-
-
-
-
-
 
 
